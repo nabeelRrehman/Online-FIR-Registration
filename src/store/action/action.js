@@ -57,14 +57,13 @@ export function OnAuth() {
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
                 // User is signed in.
-                var uid = user.uid;
-                var profile_pic = user.photoURL
                 const obj = {
-                    userUid: uid,
-                    profile_pic: profile_pic
+                    email : user.email,
+                    userUid : user.uid
                 }
+                console.log(user,'user')
                 dispatch({ type: actionTypes.USERUID, payload: obj })
-                History.push('/home')
+                // History.push('/home')
                 // ...
             } else {
                 // User is signed out.
