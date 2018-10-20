@@ -2,7 +2,7 @@
 import actionTypes from '../constant/constant'
 import firebase from 'firebase'
 import History from '../../History/History';
-
+import swal from 'sweetalert2'
 
 export function SignUpAuth(user) {
     return dispatch => {
@@ -11,8 +11,17 @@ export function SignUpAuth(user) {
                 delete user.password
                 console.log('success signup')
                 firebase.database().ref('/users/' + success.user.uid + '/').set(user)
-                History.push('/')
-                dispatch({ type: actionTypes.CURRENTUSER, payload: user })
+                    .then(() => {
+                        swal({
+                            position: 'center',
+                            type: 'success',
+                            title: 'Successfully Registered',
+                            showConfirmButton: false,
+                            timer: 1000
+                        })
+                        History.push('/')
+                        dispatch({ type: actionTypes.CURRENTUSER, payload: user })
+                    })
             })
     }
 }
@@ -23,12 +32,19 @@ export function SignInAuth(user) {
         firebase.auth().signInWithEmailAndPassword(user.email, user.password)
             .then((success) => {
                 delete user.password
+                swal({
+                    position: 'center',
+                    type: 'success',
+                    title: 'Successfully Login',
+                    showConfirmButton: false,
+                    timer: 1000
+                })
+                History.push('/home')
                 console.log('user signin success')
                 firebase.database().ref('users/' + success.user.uid + '/').on('value', (snapShot) => {
                     console.log(snapShot.val())
                     const currentUser = snapShot.val()
                     dispatch({ type: actionTypes.CURRENTUSER, payload: currentUser })
-                    History.push('/home')
                 })
             })
     }
