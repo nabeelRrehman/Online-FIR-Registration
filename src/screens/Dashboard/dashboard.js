@@ -6,6 +6,7 @@ import './dashboard.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faClipboardList } from '@fortawesome/free-solid-svg-icons'
+import Icon1 from '../../Assets/logo/police-station.png'
 
 library.add(faClipboardList)
 
@@ -22,14 +23,15 @@ class Dashboard extends Component {
             <Container user={true} logout={this.logout}>
                 <div className='flex-container'>
                     <div className='icon'>
-                        <div onClick = {() => console.log('clicked baba')}>
+                        <div>
                             <FontAwesomeIcon icon='clipboard-list' size={'2x'} />
                             <span>Complaint</span>
                         </div>
-                        {/* <div>
-                            <FontAwesomeIcon icon='clipboard-list' size={'2x'} />
-                        </div>
                         <div>
+                            <img src={Icon1} width={40}/>
+                            <span>Police Station</span>
+                        </div>
+                        {/* <div>
                             <FontAwesomeIcon icon='clipboard-list' size={'2x'} />
                         </div>
                         <div>
