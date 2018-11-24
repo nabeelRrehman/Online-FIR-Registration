@@ -26,6 +26,12 @@ import List from '@material-ui/core/List';
 import classNames from 'classnames';
 import Lock from '../../Assets/logo/baseline-lock-24px.svg';
 import MaterialIcon, { colorPalette } from 'material-icons-react';
+import History from '../../History/History'
+import logo from '../../Assets/logo/logo.png'
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
 
 
 const drawerWidth = 240;
@@ -214,6 +220,16 @@ class Container extends Component {
         });
     };
 
+    pageChange(path, text) {
+        History.push(path);
+        console.log('Text', path, text);
+        this.setState({ text: text })
+    }
+
+    home() {
+        History.push('/home')
+    }
+
     render() {
         const { children, user, logout } = this.props
         const { anchorEl, mobileMoreAnchorEl } = this.state;
@@ -225,35 +241,42 @@ class Container extends Component {
 
         const drawer = (
             <Drawer
+                className={classes.drawer}
                 variant="persistent"
-                anchor={anchor}
+                anchor="left"
                 open={open}
                 classes={{
                     paper: classes.drawerPaper,
                 }}
             >
                 <div className={classes.drawerHeader}>
-                    <IconButton onClick={this.handleDrawerClose}>
-                        {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+                    <img src={logo} style={{ width: 60, height: 60, marginRight: '20px' }} alt="Log" />
+                    {/* <h3>{text}</h3> */}
+
+                    <h3>{'ONLINE FIR'}</h3>
+                    <IconButton style={{ marginLeft: '20px' }} onClick={this.handleDrawerClose}>
+                        {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
                     </IconButton>
                 </div>
                 <Divider />
                 <List>
-                    <ul>
-                        <li>Home</li>
-                        <li>About</li>
-                        <li>Contact</li>
-                        <li>Map</li>
-                    </ul>
+                    {[{ Text: 'Home', icon: 'InboxIcon', path: '/home' }, { Text: 'Complaint', icon: 'InboxIcon', path: '/form' }, { Text: 'Complaint Status', icon: 'InboxIcon', path: '/status' }, { Text: 'Police Station', icon: 'InboxIcon', path: '/station' }].map((item, index) => (
+                        <ListItem button onClick={() => this.pageChange(item.path, item.Text)} className={classes.listItem} key={item.Text}>
+                            {/* <ListItemIcon>{<item.icon />}</ListItemIcon> */}
+
+                            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                            <ListItemText primary={item.Text} />
+                        </ListItem>
+                    ))}
                 </List>
                 <Divider />
                 <List>
-                    <ul>
-                        <li>Home</li>
-                        <li>About</li>
-                        <li>Contact</li>
-                        <li>Map</li>
-                    </ul>
+                    {[{ text: 'Profile' }, { text: 'Notifications' }, { text: 'Notifications' }, { text: 'Notifications' }].map((item, index) => (
+                        <ListItem button key={item.text}>
+                            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                            <ListItemText primary={item.text} />
+                        </ListItem>
+                    ))}
                 </List>
             </Drawer>
         );
@@ -333,7 +356,7 @@ class Container extends Component {
                                 <IconButton color="inherit" aria-label="Open drawer" onClick={this.handleDrawerOpen} className={classNames(classes.menuButton, open && classes.hide)}>
                                     <MenuIcon />
                                 </IconButton>
-                                <Typography className={classes.title} variant="h6" color="inherit" noWrap>
+                                <Typography style={{ cursor: 'pointer' }} onClick={() => this.home()} className={classes.title} variant="h6" color="inherit" noWrap>
                                     Online FIR Registration
                                 </Typography>
                                 <div className={classes.search}>
@@ -362,7 +385,7 @@ class Container extends Component {
                                     >
                                         <AccountCircle />
                                     </IconButton>
-                                    <IconButton color="inherit" onClick = {logout}>
+                                    <IconButton color="inherit" onClick={logout}>
                                         <MaterialIcon icon="lock" color='white' />
                                     </IconButton>
                                 </div>
