@@ -3,46 +3,67 @@ import Container from '../../Container/container/container';
 import firebase from 'firebase'
 import './dashboard.css'
 // import swal from 'sweetalert2'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faClipboardList } from '@fortawesome/free-solid-svg-icons'
-import Icon1 from '../../Assets/logo/police-station.png'
-
-library.add(faClipboardList)
+import { connect } from 'react-redux'
+import User from '../User/user'
+import AdminPage from '../Admin/admin'
 
 
 class Dashboard extends Component {
+    constructor() {
+        super()
 
+        this.state = {
+            user: null
+        }
+    }
 
     logout() {
         firebase.auth().signOut()
     }
 
+    static getDerivedStateFromProps(props) {
+        console.log(props)
+        if (props.userData) {
+            const { userData } = props
+            console.log(userData.User)
+            return { user: userData.User }
+        }
+    }
+
     render() {
+        const { user } = this.state
         return (
             <Container user={true} logout={this.logout}>
-                <div className='flex-container'>
-                    <div className='icon'>
-                        <div>
-                            <FontAwesomeIcon icon='clipboard-list' size={'2x'} />
-                            <span>Complaint</span>
-                        </div>
-                        <div>
-                            <img src={Icon1} width={40}/>
-                            <span>Police Station</span>
-                        </div>
-                        {/* <div>
-                            <FontAwesomeIcon icon='clipboard-list' size={'2x'} />
-                        </div>
-                        <div>
-                            <FontAwesomeIcon icon='clipboard-list' size={'2x'} />
-                        </div> */}
-                        
-                    </div>
-                </div>
+                {
+                    user === 'user' &&
+                    <User />
+                }
+                {
+                    user === 'admin' &&
+                    <AdminPage />
+                }
             </Container>
         )
     }
 }
 
-export default Dashboard;
+
+function mapStateToProps(state) {
+    return ({
+        user: state.authReducer.USERUID,
+        userData: state.authReducer.USERDATA,
+    })
+}
+
+function mapDispatchToProps(dispatch) {
+    return ({
+        // LoginMethod: (text) => {
+        //     dispatch(SignInAuth(text))
+        // }
+    })
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+
+
+// export default Dashboard;
