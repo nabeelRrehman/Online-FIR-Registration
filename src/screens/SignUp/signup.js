@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import Button from '../../components/Button/button'
 import './signup.css'
-import firebase from 'firebase'
-import 'firebase/auth'
 import swal from 'sweetalert2'
 import { SignUpAuth } from '../../store/action/action'
 import { connect } from 'react-redux'
@@ -180,9 +178,9 @@ class SignUp extends Component {
 
             if (password === re_password) {
                 const obj = {
-                    name : f_name+ ' '+l_name,
+                    name: f_name + ' ' + l_name,
                     email: email,
-                    password : password
+                    password: password
                 }
                 SignUpMethod(obj)
             } else {
@@ -207,54 +205,59 @@ class SignUp extends Component {
     }
 
     loginPage() {
-        this.props.history.push('/')
+        this.props.history.push('/login')
     }
-    
+
     render() {
         // console.log(this.props.user)
         return (
-            <div className='main-container'>
-                <div className='flex-box'>
-                    <div className="field1">
-                        SIGNUP
+            <div>
+                <div className='main-page'>
+                    <h1>Online FIR Registration</h1>
+                </div>
+                <div className='main-container'>
+                    <div className='flex-box'>
+                        <div className="field1">
+                            SIGNUP
                     </div>
-                    <div className="field1" onClick={() => this.loginPage()}>
-                        LOGIN
+                        <div className="field1" onClick={() => this.loginPage()}>
+                            LOGIN
                     </div>
-                    <div className='signUpDiv'>
-                        <div className="sign-up">
-                            SIGN UP HERE
+                        <div className='signUpDiv'>
+                            <div className="sign-up">
+                                SIGN UP HERE
                         </div>
-                        <div className='input-fields'>
-                            <input type='text' placeholder='First name*' onChange={(e) => this.fName(e.target.value)} />
-                            <br />
-                            <span id='err'></span>
-                        </div>
-                        <div className='input-fields'>
-                            <input type='text' placeholder='Last name*' onChange={(e) => this.lName(e.target.value)} />
-                            <br />
-                            <span id='err2'></span>
-                        </div>
-                        <div className='input-fields'>
-                            <input type='email' placeholder='Email*' onChange={(e) => this.email(e.target.value)} />
-                            <br />
-                            <span id='emailErr'></span>
-                        </div>
-                        <div className='input-fields'>
-                            <input type='password' placeholder='Password*' onChange={(e) => this.password(e.target.value)} />
-                            <br />
-                            <span id='passwordErr'></span>
-                        </div>
-                        <div className='input-fields'>
-                            <input type='password' placeholder='Retype password*' onChange={(e) => this.re_password(e.target.value)} />
-                            <br />
-                            <span id='passwordErr2'></span>
-                        </div>
-                        <div className='input-fields'>
-                            <Button name={'Sign Up'} btnEvent={this.signUp} />
-                        </div>
-                        <div className='fields'>
-                            <h5>Already Registered ?<button className='signuplink' onClick={() => this.loginPage()}> Login now</button></h5>
+                            <div className='input-fields'>
+                                <input type='text' placeholder='First name*' onChange={(e) => this.fName(e.target.value)} />
+                                <br />
+                                <span id='err'></span>
+                            </div>
+                            <div className='input-fields'>
+                                <input type='text' placeholder='Last name*' onChange={(e) => this.lName(e.target.value)} />
+                                <br />
+                                <span id='err2'></span>
+                            </div>
+                            <div className='input-fields'>
+                                <input type='email' placeholder='Email*' onChange={(e) => this.email(e.target.value)} />
+                                <br />
+                                <span id='emailErr'></span>
+                            </div>
+                            <div className='input-fields'>
+                                <input type='password' placeholder='Password*' onChange={(e) => this.password(e.target.value)} />
+                                <br />
+                                <span id='passwordErr'></span>
+                            </div>
+                            <div className='input-fields'>
+                                <input type='password' placeholder='Retype password*' onChange={(e) => this.re_password(e.target.value)} />
+                                <br />
+                                <span id='passwordErr2'></span>
+                            </div>
+                            <div className='input-fields'>
+                                <Button name={'Sign Up'} btnEvent={this.signUp} />
+                            </div>
+                            <div className='fields'>
+                                <h5>Already Registered ?<button className='signuplink' onClick={() => this.loginPage()}> Login now</button></h5>
+                            </div>
                         </div>
                     </div>
                 </div>
