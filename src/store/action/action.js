@@ -3,7 +3,7 @@ import actionTypes from '../constant/constant'
 import History from '../../History/History';
 import swal from 'sweetalert2'
 import firebase from '../../Config/Firebase/firebase'
-import { func } from 'prop-types';
+
 
 export function SignUpAuth(user) {
     return dispatch => {
@@ -114,20 +114,44 @@ export function Complaint(user, obj) {
     }
 }
 
-
+UserNotify
 export function UserComplaints(user) {
     const arr2 = []
     return dispatch => {
         firebase.database().ref('/complaint/' + user + '/').on('child_added', (snapShot) => {
             // console.log(snapShot.val(),'complaints')
             // console.log(snapShot.val(), 'complaints')
-            
+
             arr2.push(snapShot.val())
-            arr2.forEach((element)=>{
+            arr2.forEach((element) => {
                 element.key = snapShot.key
             })
         })
-        
+
         dispatch({ type: actionTypes.COMPLAINT, payload: arr2 })
+    }
+}
+
+
+export function UserNotify(user) {
+    const arr2 = []
+    return dispatch => {
+        firebase.database().ref('/complaint/' + user + '/').on('child_changed', (snapshot) => {
+            if (snapshot.val().status === 'resolved') {
+                dispatch({ type: actionTypes.NOTIFY, payload: snapshot.val() })
+            }
+        })
+    }
+}
+
+export function ComplaintResolved(user) {
+    const arr = []
+    return dispatch => {
+        firebase.database().ref('/complaint/' + user + '/').on('child_added', (snapshot) => {
+            if (snapshot.val().status === 'resolved') {
+                arr.push(snapshot.val())
+            }
+            dispatch({ type: actionTypes.RESOLVED, payload: arr })
+        })
     }
 }

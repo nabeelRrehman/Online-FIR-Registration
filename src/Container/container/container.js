@@ -32,6 +32,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
+import { connect } from 'react-redux'
 
 
 const drawerWidth = 240;
@@ -187,7 +188,30 @@ class Container extends Component {
         mobileMoreAnchorEl: null,
         open: false,
         anchor: 'left',
+        notify: []
     };
+
+    componentDidMount() {
+        if (this.props.resolved) {
+            this.setState({ notify: this.props.resolved })
+        }
+        if (this.props.notify) {
+            const { notify } = this.state
+            notify.push(this.props.notify)
+            this.setState({ notify })
+        }
+    }
+
+    componentWillReceiveProps(props) {
+        if (props.resolved) {
+            this.setState({ notify: props.resolved })
+        }
+        if (props.notify !== this.props.notify) {
+            const { notify } = this.state
+            notify.push(props.notify)
+            this.setState({ notify })
+        }
+    }
 
     handleProfileMenuOpen = event => {
         this.setState({ anchorEl: event.currentTarget });
@@ -230,9 +254,13 @@ class Container extends Component {
         History.push('/home')
     }
 
+    notify() {
+        History.push('/notification')
+    }
+
     render() {
         const { children, user, logout } = this.props
-        const { anchorEl, mobileMoreAnchorEl } = this.state;
+        const { anchorEl, mobileMoreAnchorEl, notify } = this.state;
         const { classes } = this.props;
         const isMenuOpen = Boolean(anchorEl);
         const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -302,11 +330,20 @@ class Container extends Component {
                 open={isMobileMenuOpen}
                 onClose={this.handleMobileMenuClose}
             >
-                <MenuItem>
+                <MenuItem onClick={() => this.notify()}>
                     <IconButton color="inherit">
-                        {/* <Badge className={classes.margin} badgeContent={11} color="secondary"> */}
-                        <NotificationsIcon />
-                        {/* </Badge> */}
+                        {
+                            notify.length > 0 &&
+                            <Badge className={classes.margin} badgeContent={notify.length} color="secondary">
+                                <NotificationsIcon />
+                            </Badge>
+                        }
+                        {
+                            !notify.length &&
+                            // <Badge className={classes.margin} badgeContent={17} color="secondary">
+                            <NotificationsIcon />
+                            // </Badge>
+                        }
                     </IconButton>
                     <p>Notifications</p>
                 </MenuItem>
@@ -373,10 +410,19 @@ class Container extends Component {
                                 </div>
                                 <div className={classes.grow} />
                                 <div className={classes.sectionDesktop}>
-                                    <IconButton color="inherit">
-                                        {/* <Badge className={classes.margin} badgeContent={17} color="secondary"> */}
-                                        <NotificationsIcon />
-                                        {/* </Badge> */}
+                                    <IconButton onClick={() => this.notify()} color="inherit">
+                                        {
+                                            notify.length > 0 &&
+                                            <Badge className={classes.margin} badgeContent={notify.length} color="secondary">
+                                                <NotificationsIcon />
+                                            </Badge>
+                                        }
+                                        {
+                                            !notify.length &&
+                                            // <Badge className={classes.margin} badgeContent={17} color="secondary">
+                                            <NotificationsIcon />
+                                            // </Badge>
+                                        }
                                     </IconButton>
                                     <IconButton
                                         aria-owns={isMenuOpen ? 'material-appbar' : null}
@@ -413,5 +459,23 @@ Container.propTypes = {
     theme: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles, { withTheme: true })(Container);
+function mapStateToProps(state) {
+    return ({
+        user: state.authReducer.USERUID,
+        resolved: state.authReducer.RESOLVED,
+        notify: state.authReducer.NOTIFY,
+    })
+}
 
+function mapDispatchToProps(dispatch) {
+    return ({
+        // UserCheck: (text) => {
+        //     dispatch(OnAuth(text))
+        // }
+    })
+}
+
+
+// export default withStyles(styles, { withTheme: true })(Container);
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(Container));
