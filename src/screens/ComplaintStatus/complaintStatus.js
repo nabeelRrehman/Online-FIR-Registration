@@ -17,6 +17,7 @@ import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import swal from 'sweetalert2'
+import History from '../../History/History'
 
 
 const styles = theme => ({
@@ -74,13 +75,15 @@ class ComplaintStatus extends Component {
 
     static getDerivedStateFromProps(props) {
         if (props.complaint) {
-            console.log(props.complaint,'props complaint')
-            return ({ complaints: props.complaint })
+            console.log(props.complaint, 'props complaint')
+            console.log(props.userFeedbacks, 'feefdgfdgfgfdgfdg')
+            return ({ complaints: props.complaint, feedbacks: props.userFeedbacks })
         }
     }
 
+
     getResult() {
-        const { regNo, complaints } = this.state
+        const { regNo, complaints, feedbacks } = this.state
 
         this.setState({ regNo: '' })
         if (regNo) {
@@ -88,6 +91,12 @@ class ComplaintStatus extends Component {
                 complaints.map((items) => {
                     if (items.id === regNo) {
                         this.setState({ data: items, notFound: false })
+                        feedbacks &&
+                            feedbacks.map(item => {
+                                if (item.registrationNo === items.id) {
+                                    this.setState({ show: true })
+                                }
+                            })
                     }
                 })
             }
@@ -102,12 +111,13 @@ class ComplaintStatus extends Component {
 
     }
 
-    feedBack() {
-
+    feedBack(registrationNo) {
+        console.log(registrationNo, 'regno')
+        History.push('/feedback/' + registrationNo)
     }
 
     render() {
-        const { user, regNo, data, notFound } = this.state
+        const { user, regNo, data, notFound, show } = this.state
         const { classes } = this.props;
         return (
             <Container user={true} logout={this.logout}>
@@ -266,9 +276,14 @@ class ComplaintStatus extends Component {
                                                     </div>
                                                 }
                                                 <div>
-                                                    <Button onClick={() => this.feedBack()} size="small" color="primary">
-                                                        FEEDBACK
-                                                    </Button>
+                                                    {
+                                                        !show ?
+                                                            <Button onClick={() => this.feedBack(data.id)} size="small" color="primary">
+                                                                FEEDBACK
+                                                            </Button>
+                                                            :
+                                                            null
+                                                    }
                                                 </div>
                                             </div>
                                         </ExpansionPanelActions>
@@ -294,7 +309,8 @@ function mapStateToProps(state) {
     return ({
         user: state.authReducer.USERUID,
         userData: state.authReducer.USERDATA,
-        complaint: state.authReducer.COMPLAINT
+        complaint: state.authReducer.COMPLAINT,
+        userFeedbacks: state.authReducer.FEEDBACKS,
     })
 }
 

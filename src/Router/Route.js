@@ -7,7 +7,7 @@ import Login from '../screens/Login/login';
 import SignUp from '../screens/SignUp/signup';
 import { connect } from 'react-redux'
 import { OnAuth } from '../store/action/action';
-import { UserInfo, UserComplaints, UserNotify, ComplaintResolved } from '../store/action/action';
+import { UserInfo, UserComplaints, UserNotify, ComplaintResolved, UserFeedback } from '../store/action/action';
 import MainPage from '../screens/MainPage/mainpage';
 import Admin from '../screens/AdminPanel/admin';
 import Form from '../components/Form/form';
@@ -25,13 +25,14 @@ class Routers extends Component {
     }
 
     static getDerivedStateFromProps(props) {
-        const { UserData, Complaints, Notify,Resolved } = props
+        const { UserData, Complaints, Notify, Resolved, Feedbacks } = props
         if (props.user) {
             console.log(props.user, 'user here')
             UserData(props.user.userUid)
             Complaints(props.user.userUid)
             Notify(props.user.userUid)
             Resolved(props.user.userUid)
+            Feedbacks(props.user.userUid)
         }
     }
 
@@ -46,7 +47,7 @@ class Routers extends Component {
                     <Route exact path="/signup" component={SignUp} />
                     <Route exact path='/home' component={Dashboard} />
                     <Route exact path='/status' component={ComplaintStatus} />
-                    <Route exact path='/feedback' component={Feedback} />
+                    <Route exact path='/feedback/:regNo' component={Feedback} />
                     <Route exact path='/history' component={FirHistory} />
                     <Route exact path='/notification' component={Notify} />
                 </div>
@@ -77,6 +78,9 @@ function mapDispatchToProps(dispatch) {
         },
         Resolved: (text) => {
             dispatch(ComplaintResolved(text))
+        },
+        Feedbacks: (text) => {
+            dispatch(UserFeedback(text))
         }
     })
 }

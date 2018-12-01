@@ -8,7 +8,7 @@ import FeedbackIcon from '../../Assets/logo/feedback.png'
 import './feedback.css'
 import RatingStars from '../../Assets/logo/ratingStars.png'
 import RatingStarsBlue from '../../Assets/logo/ratingStars-blue.png'
-
+import { FeedbackAdd } from '../../store/action/action'
 
 class FeedBack extends Component {
     constructor() {
@@ -34,15 +34,20 @@ class FeedBack extends Component {
     }
 
     submit() {
+        const { addFeedback, user } = this.props
+        const { regNo } = this.props.match.params
         const { ratingIndex, statusValue, selectedValue, feedback } = this.state
         const obj = {
             rating: ratingIndex + 1,
             complaintStatus: statusValue,
             satisfaction: selectedValue,
-            feedback
+            feedback,
+            registrationNo : regNo
         }
 
-        console.log(obj)
+        console.log(user,'sajhvdjah')
+        addFeedback(user.userUid,obj)
+
     }
 
     render() {
@@ -56,28 +61,6 @@ class FeedBack extends Component {
                             Feedback
                         </div>
                         <hr />
-                        {/* <div className={'search-complain'}>
-                            <div>
-                                <TextField
-                                    id="outlined-bare"
-                                    className="Input"
-                                    value={regNo}
-                                    label={'Compliant ID'}
-                                    placeholder="Search By Complaint ID"
-                                    margin="normal"
-                                    variant="outlined"
-                                />
-                            </div>
-                            <div>
-                                <Button
-                                    variant={'raised'}
-                                    className={'btn'}
-                                    color={'primary'}
-                                >
-                                    Get Details
-                                </Button>
-                            </div>
-                        </div> */}
                         <div className={'feedback'}>
                             <div>
                                 Rate this complaint resolution<br />
@@ -180,9 +163,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return ({
-        // LoginMethod: (text) => {
-        //     dispatch(SignInAuth(text))
-        // }
+        addFeedback: (user,text) => {
+            dispatch(FeedbackAdd(user,text))
+        }
     })
 }
 

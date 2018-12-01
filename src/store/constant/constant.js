@@ -6,7 +6,8 @@ const actionTypes = {
     COMPLAINT: 'COMPLAINT',
     PENDING: 'PENDING',
     RESOLVED: 'RESOLVED',
-    NOTIFY: 'NOTIFY'
+    NOTIFY: 'NOTIFY',
+    FEEDBACKS: 'FEEDBACKS'
 }
 
 export default actionTypes

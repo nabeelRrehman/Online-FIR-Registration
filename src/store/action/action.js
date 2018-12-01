@@ -155,3 +155,35 @@ export function ComplaintResolved(user) {
         })
     }
 }
+
+
+
+export function FeedbackAdd(user, obj) {
+    return dispatch => {
+        firebase.database().ref('/feedback/' + user + '/' + obj.registrationNo).push(obj)
+            .then(() => {
+                swal({
+                    position: 'center',
+                    type: 'success',
+                    title: 'Thanyou For Your Feedback',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                History.push('/home')
+            })
+    }
+}
+
+
+export function UserFeedback(user) {
+    const arr = []
+    return dispatch => {
+        firebase.database().ref('/feedback/' + user + '/').on('child_added', (snapshot) => {
+            for (var key in snapshot.val()) {
+                console.log(snapshot.val()[key])
+                arr.push(snapshot.val()[key])
+            }
+            dispatch({ type: actionTypes.FEEDBACKS, payload: arr })
+        })
+    }
+}

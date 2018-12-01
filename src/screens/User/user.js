@@ -3,13 +3,15 @@ import { connect } from 'react-redux'
 import Icon1 from '../../Assets/logo/police-station.png'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faClipboardList, faBoxes, faCheckCircle, faUserCheck, faHistory } from '@fortawesome/free-solid-svg-icons'
+import { faClipboardList, faBoxes, faCheckCircle, faUserCheck, faHistory,
+        faBalanceScale } from '@fortawesome/free-solid-svg-icons'
 import History from '../../History/History'
 import Icon2 from '../../Assets/logo/status-white.png'
 import firebase from '../../Config/Firebase/firebase'
 
 
-library.add(faClipboardList, faBoxes, faCheckCircle, faUserCheck, faHistory)
+library.add(faClipboardList, faBoxes, faCheckCircle, faUserCheck, faHistory,
+        faBalanceScale)
 
 
 class User extends Component {
@@ -99,6 +101,10 @@ class User extends Component {
                     <div onClick={() => this.complaintHistory()}>
                         <FontAwesomeIcon icon='history' style={{marginTop: '10px'}} size={'2x'} />
                         <span>FIR History</span>
+                    </div>
+                    <div onClick={() => this.complaintHistory()}>
+                        <FontAwesomeIcon icon='balance-scale' style={{marginTop: '5px'}} size={'2x'} />
+                        <span>Complain Against Officer</span>
                     </div>
                 </div>
                 <div className={'user-complaint-status'}>

@@ -8,7 +8,8 @@ const INITIAL_STATE = {
     COMPLAINT: null,
     PENDING: null,
     RESOLVED: null,
-    NOTIFY: null
+    NOTIFY: null,
+    FEEDBACKS: null
 }
 
 export default (states = INITIAL_STATE, action) => {
@@ -47,6 +48,11 @@ export default (states = INITIAL_STATE, action) => {
             return ({
                 ...states,
                 NOTIFY: action.payload
+            })
+        case actionTypes.FEEDBACKS:
+            return ({
+                ...states,
+                FEEDBACKS: action.payload
             })
         default:
             return states;
