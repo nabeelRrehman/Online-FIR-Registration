@@ -7,7 +7,8 @@ const actionTypes = {
     PENDING: 'PENDING',
     RESOLVED: 'RESOLVED',
     NOTIFY: 'NOTIFY',
-    FEEDBACKS: 'FEEDBACKS'
+    FEEDBACKS: 'FEEDBACKS',
+    ALLCOMPLAINT: 'ALLCOMPLAINT'
 }
 
 export default actionTypes

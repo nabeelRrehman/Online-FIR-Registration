@@ -80,9 +80,12 @@ export function OnAuth() {
 export function UserInfo(id) {
     return dispatch => {
         firebase.database().ref('users/' + id + '/').on('value', (snapShot) => {
+            // console.log(snapShot,'sadjkbaksjdb')
+            // if (snapShot.val()) {
             console.log(snapShot.val(), 'dyatas')
             localStorage.setItem('user', snapShot.val().User)
             dispatch({ type: actionTypes.USERDATA, payload: snapShot.val() })
+            // }
         })
     }
 }
@@ -184,6 +187,60 @@ export function UserFeedback(user) {
                 arr.push(snapshot.val()[key])
             }
             dispatch({ type: actionTypes.FEEDBACKS, payload: arr })
+        })
+    }
+}
+
+
+export function LoginAdmin(obj) {
+    // swal({
+    //     onOpen: () => {
+    //         swal.showLoading()
+    //     },
+    // })
+    return dispatch => {
+        firebase.auth().createUserWithEmailAndPassword(obj.email, obj.password)
+            .then((user) => {
+                const obj = {
+                    User: 'admin',
+                    email: user.user.email,
+                }
+                firebase.database().ref('/users/').child(user.user.uid).set(obj)
+                    .then(() => {
+                        swal({
+                            position: 'center',
+                            type: 'success',
+                            title: 'Sucessfull',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        History.push('/home')
+                    })
+            })
+    }
+}
+
+
+export function Designation(user, obj) {
+    return dispatch => {
+        firebase.database().ref('admin/' + user + '/role').update(obj)
+            .then(() => {
+                console.log('successfully Updated')
+            })
+    }
+}
+
+export function AllComplaints() {
+    var complaint = []
+    return dispatch => {
+        firebase.database().ref('complaint').on('value', (snapShot) => {
+            for (var key in snapShot.val()) {
+                firebase.database().ref('complaint/' + key + '/').on('child_added', (snaps) => {
+                    console.log(snaps.val(), 'valll')
+                    complaint.push(snaps.val())
+                })
+                dispatch({ type: actionTypes.ALLCOMPLAINT, payload: complaint })
+            }
         })
     }
 }

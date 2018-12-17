@@ -1,34 +1,20 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
-
-
-
+import {Provider} from 'react-redux'
+import store from '../../store'
+import AdminRoutes from '../../Router/AdminRoutes';
 
 class AdminPage extends Component {
 
-    render() {
-        return (
-            <div>Admin</div>
-        )
-    }
+  render() {
+    return (
+    
+      //Routers
+      
+      <Provider store = {store}>
+        <AdminRoutes />   
+      </Provider>
+    );
+  }
 }
 
-
-function mapStateToProps(state) {
-    return ({
-        user: state.authReducer.USERUID,
-    })
-}
-
-function mapDispatchToProps(dispatch) {
-    return ({
-        // LoginMethod: (text) => {
-        //     dispatch(SignInAuth(text))
-        // }
-    })
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(AdminPage);
-
-
-// export default Dashboard;
+export default AdminPage;
