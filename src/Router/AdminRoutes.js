@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { Route, Router } from 'react-router-dom';
 
-import history from '../History/History'
+import history from '../History/AdminHistory'
 import { connect } from 'react-redux'
-import Role from '../AdminScreens/Role/role';
 import { AllComplaints } from '../store/action/action'
-import Complaint from '../AdminScreens/Complaint/complaint';
+import MainPage from '../AdminScreens/MainPage/mainPage';
+import admin from '../screens/AdminPanel/admin';
+import complaint from '../AdminScreens/Complaint/complaint';
+
 
 class AdminRouter extends Component {
 
@@ -19,8 +21,9 @@ class AdminRouter extends Component {
         return (
             <Router history={history}>
                 <div>
-                    <Route exact path="/home" component={Role} />
-                    <Route exact path="/complaints" component={Complaint} />
+                    <Route exact path="/admin" component={admin} />
+                    <Route exact path="/complaint" component={complaint} />
+                    <Route exact path="/home" component={MainPage} />
 
                 </div>
             </Router>

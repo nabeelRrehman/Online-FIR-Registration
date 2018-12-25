@@ -80,6 +80,22 @@ body{
     color: white;
     background: none;
 }
+.input-fields select{
+    width: 400px;
+    padding: 5px;
+    border-bottom: 3px solid #3f51b5;
+    border-top: none;
+    transition: 1s;
+    border-left: none;
+    border-right: none;
+    text-align: left;
+    font-weight: bold;
+    color: grey;
+    background: none;
+}
+.input-fields select option{
+    color: #24333c;
+}
 .input-fields input:focus{
     background: white;
     color: #24333c;

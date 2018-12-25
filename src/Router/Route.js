@@ -9,7 +9,7 @@ import { connect } from 'react-redux'
 import { OnAuth } from '../store/action/action';
 import { UserInfo, UserComplaints, UserNotify, ComplaintResolved, UserFeedback } from '../store/action/action';
 import MainPage from '../screens/MainPage/mainpage';
-import Admin from '../screens/AdminPanel/admin';
+import Admin from '../screens/Admin/admin';
 import Form from '../components/Form/form';
 import ComplaintStatus from '../screens/ComplaintStatus/complaintStatus';
 import Feedback from '../screens/Feedback/feedback';

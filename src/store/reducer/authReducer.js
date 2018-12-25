@@ -9,7 +9,8 @@ const INITIAL_STATE = {
     PENDING: null,
     RESOLVED: null,
     NOTIFY: null,
-    FEEDBACKS: null
+    FEEDBACKS: null,
+    ALLCOMPLAINT: null
 }
 
 export default (states = INITIAL_STATE, action) => {
@@ -53,6 +54,11 @@ export default (states = INITIAL_STATE, action) => {
             return ({
                 ...states,
                 FEEDBACKS: action.payload
+            })
+        case actionTypes.ALLCOMPLAINT:
+            return ({
+                ...states,
+                ALLCOMPLAINT: action.payload
             })
         default:
             return states;

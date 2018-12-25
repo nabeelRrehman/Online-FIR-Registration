@@ -193,18 +193,16 @@ export function UserFeedback(user) {
 
 
 export function LoginAdmin(obj) {
-    // swal({
-    //     onOpen: () => {
-    //         swal.showLoading()
-    //     },
-    // })
+    swal({
+        onOpen: () => {
+            swal.showLoading()
+        },
+    })
     return dispatch => {
         firebase.auth().createUserWithEmailAndPassword(obj.email, obj.password)
             .then((user) => {
-                const obj = {
-                    User: 'admin',
-                    email: user.user.email,
-                }
+                delete obj.password
+                obj.User = 'admin'
                 firebase.database().ref('/users/').child(user.user.uid).set(obj)
                     .then(() => {
                         swal({
@@ -212,20 +210,10 @@ export function LoginAdmin(obj) {
                             type: 'success',
                             title: 'Sucessfull',
                             showConfirmButton: false,
-                            timer: 1500
+                            timer: 500
                         })
                         History.push('/home')
                     })
-            })
-    }
-}
-
-
-export function Designation(user, obj) {
-    return dispatch => {
-        firebase.database().ref('admin/' + user + '/role').update(obj)
-            .then(() => {
-                console.log('successfully Updated')
             })
     }
 }

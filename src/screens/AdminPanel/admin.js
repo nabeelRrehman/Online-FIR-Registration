@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Button from '../../components/Button/button'
 import firebase from '../../Config/Firebase/firebase'
 // import 'firebase/auth'
-// import swal from 'sweetalert2'
+import swal from 'sweetalert2'
 import { LoginAdmin } from '../../store/action/action'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -40,16 +40,26 @@ class Admin extends Component {
     }
 
     adminLogin() {
-        const { email, password } = this.state
+        const { email, password, designation, district } = this.state
         const { adminAuth } = this.props
 
-        var obj = {
-            email,
-            password
-        }
-        // console.log(user, 'userjsadkajj')
+        if (!email || !password || !designation || !district) {
+            swal({
+                type: 'error',
+                title: 'Oops...',
+                text: 'Fill all the fields!'
+              })
+        } else {
 
-        adminAuth(obj)
+            var obj = {
+                email,
+                password,
+                designation,
+                district
+            }
+            // console.log(user, 'userjsadkajj')   
+            adminAuth(obj)
+        }
     }
 
     render() {
@@ -72,6 +82,27 @@ class Admin extends Component {
                             </div>
                             <div className='input-fields'>
                                 <input type='password' placeholder='Password*' onChange={(e) => this.setState({ password: e.target.value })} />
+                            </div>
+                            <div className='input-fields'>
+                                <select onChange={(e) => this.setState({ designation: e.target.value })}>
+                                    <option value={''}>Select Your Designation</option>
+                                    <option value={'ig'}>IG - Inspector General</option>
+                                    <option value={'aig'}>AIG - Additional Inspector General</option>
+                                    <option value={'dig'}>DIG - Deputy Inspector General</option>
+                                    <option value={'ssp'}>SSP - Senior Superintendent of Police</option>
+                                </select>
+                            </div>
+                            <div className='input-fields'>
+                                <select onChange={(e) => this.setState({ district: e.target.value })}>
+                                    <option value={''}>Select Your District</option>
+                                    <option value={'south'}>South</option>
+                                    <option value={'city'}>City</option>
+                                    <option value={'central'}>Central</option>
+                                    <option value={'malir'}>Malir</option>
+                                    <option value={'korangi'}>Korangi</option>
+                                    <option value={'east'}>East</option>
+                                    <option value={'west'}>West</option>
+                                </select>
                             </div>
                             <div className='input-fields' onClick={() => this.adminLogin()}>
                                 <Button name={'Login'} />
